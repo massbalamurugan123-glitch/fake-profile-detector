@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Safety tips{% endblock %}
+{% block content %}
+<section class="intro">
+  <h1>Stay safe online</h1>
+  <p class="lead">Fake profiles are used for scams, blackmail and spreading false information. These habits protect you.</p>
+</section>
+<div class="tip-groups">
+  {% for g in groups %}
+  <section class="card">
+    <h2>{{ g.title }}</h2>
+    <ul class="plain">
+      {% for item in g['items'] %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

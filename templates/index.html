@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="intro">
+  <h1>Is this profile real?</h1>
+  <p class="lead">Type what you can see on the profile and get a risk score with the reasons behind it and tips to stay safe.</p>
+</section>
+
+<div class="layout">
+  <form class="card" method="post" action="{{ url_for('analyze') }}" id="check-form" novalidate>
+
+    <fieldset>
+      <legend>Profile basics</legend>
+      <div class="grid two">
+        <label>Platform
+          <select name="platform">
+            {% for p in platforms %}<option {{ 'selected' if form.get('platform') == p }}>{{ p }}</option>{% endfor %}
+          </select>
+        </label>
+        <label>Username
+          <input name="username" value="{{ form.get('username', '') }}" placeholder="e.g. priya_k" maxlength="60" required>
+        </label>
+      </div>
+      <label>Display name
+        <input name="display_name" value="{{ form.get('display_name', '') }}" placeholder="The name shown on the profile" maxlength="80">
+      </label>
+      <label>Bio
+        <textarea name="bio" rows="3" maxlength="500" placeholder="Copy the bio text here (leave empty if there is none)">{{ form.get('bio', '') }}</textarea>
+        <span class="count" data-count-for="bio"></span>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Numbers on the profile</legend>
+      <div class="grid three">
+        <label>Followers
+          <input type="number" name="followers" min="0" value="{{ form.get('followers', '') }}" required>
+        </label>
+        <label>Following
+          <input type="number" name="following" min="0" value="{{ form.get('following', '') }}" required>
+        </label>
+        <label>Posts
+          <input type="number" name="posts" min="0" value="{{ form.get('posts', '') }}" required>
+        </label>
+        <label>Account age (months)
+          <input type="number" name="age_months" min="0" max="600" value="{{ form.get('age_months', '') }}" required>
+          <span class="hint">Use 0 if less than a month</span>
+        </label>
+        <label>Mutual connections
+          <input type="number" name="mutual" min="0" value="{{ form.get('mutual', '') }}">
+          <span class="hint">Optional</span>
+        </label>
+        <label>Average likes per post
+          <input type="number" name="avg_likes" min="0" value="{{ form.get('avg_likes', '') }}">
+          <span class="hint">Optional, helps spot bought followers</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>What does the profile show?</legend>
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="has_photo" {{ 'checked' if form.get('has_photo') }}> Has a profile photo (tick if yes)</label>
+        <label class="check"><input type="checkbox" name="verified" {{ 'checked' if form.get('verified') }}> Verified badge</label>
+        <label class="check"><input type="checkbox" name="private" {{ 'checked' if form.get('private') }}> Private account</label>
+        <label class="check"><input type="checkbox" name="has_link" {{ 'checked' if form.get('has_link') }}> Link in bio</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Has this profile done any of these?</legend>
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="asked_money" {{ 'checked' if form.get('asked_money') }}> Asked for money, gift cards, OTP or bank details</label>
+        <label class="check"><input type="checkbox" name="urgent" {{ 'checked' if form.get('urgent') }}> Pushed me to act fast</label>
+        <label class="check"><input type="checkbox" name="sent_link" {{ 'checked' if form.get('sent_link') }}> Sent a strange link or file</label>
+        <label class="check"><input type="checkbox" name="claims_famous" {{ 'checked' if form.get('claims_famous') }}> Claims to be a celebrity or brand</label>
+      </div>
+    </fieldset>
+
+    <button class="btn" type="submit" id="submit-btn">Check this profile</button>
+  </form>
+
+  <aside class="side">
+    <h2>What gets checked</h2>
+    <ul class="plain">
+      <li>Username and name pattern</li>
+      <li>Account age, posts, followers and following</li>
+      <li>Engagement compared with follower count</li>
+      <li>Scam words in the bio</li>
+      <li>Verified badge and mutual connections</li>
+      <li>Scam behaviour such as asking for money</li>
+    </ul>
+    <p class="hint">Nothing is sent to other websites. Everything stays on this computer.</p>
+  </aside>
+</div>
+{% endblock %}

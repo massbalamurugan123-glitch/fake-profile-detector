@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}How it works{% endblock %}
+{% block content %}
+<section class="intro">
+  <h1>How it works</h1>
+  <p class="lead">The detector adds up risk points from clear, explainable rules. Good signs remove points.</p>
+</section>
+
+<div class="tip-groups">
+  <section class="card">
+    <h2>Steps</h2>
+    <ol class="plain">
+      <li>You enter the profile details: username, name, bio, numbers and any scam behaviour you noticed.</li>
+      <li>The server checks that the input is valid.</li>
+      <li>Each rule adds or removes risk points. The total is limited to 0 - 100.</li>
+      <li>The score decides the verdict, and tips matching the warning signs are shown.</li>
+      <li>The result is saved in the history so you can open it again.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Score meaning</h2>
+    <ul class="plain">
+      <li><span class="badge real">Likely real</span> 0 to {{ real_max }}</li>
+      <li><span class="badge suspicious">Suspicious</span> {{ real_max + 1 }} to {{ susp_max }}</li>
+      <li><span class="badge fake">Likely fake</span> {{ susp_max + 1 }} to 100</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Rules that add risk</h2>
+    <ul class="plain">
+      <li>Asked for money, OTP or bank details (+30)</li>
+      <li>Spam words in bio, strange link, pressure to act fast, follow-spam pattern, new account with huge following (+15 each)</li>
+      <li>No profile photo, account under 1 month old (+15 each)</li>
+      <li>Auto-generated username, no posts, low engagement (+12 each)</li>
+      <li>Asking for money never scores below 40, even on an old account, because it may be hacked or cloned.</li>
+      <li>Smaller signals: empty bio, no mutual connections, name and username do not match</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Limits you should know</h2>
+    <ul class="plain">
+      <li>It is a screening tool. A real person can score high and a careful fake can score low.</li>
+      <li>The details are typed by you, so the result is only as honest as the input.</li>
+      <li>It does not look at the photo itself. Check the picture yourself with a reverse image search (Google Lens or TinEye).</li>
+    </ul>
+  </section>
+</div>
+{% endblock %}

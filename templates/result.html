@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}@{{ check.username }} - result{% endblock %}
+{% block content %}
+{% set off = (251.3 * (1 - check.score / 100)) | round(1) %}
+<section class="verdict {{ check.level }}">
+  <div class="gauge" role="img" aria-label="Risk score {{ check.score }} out of 100">
+    <svg viewBox="0 0 200 112">
+      <path class="track" d="M20 100 A80 80 0 0 1 180 100" />
+      <path class="fill" d="M20 100 A80 80 0 0 1 180 100" style="--off: {{ off }}" />
+    </svg>
+    <div class="num"><strong>{{ check.score }}</strong><span>risk out of 100</span></div>
+  </div>
+  <div class="vtext">
+    <p class="who">{{ check.platform }} &middot; @{{ check.username }}{% if check.display_name %} &middot; {{ check.display_name }}{% endif %}</p>
+    <h1>{{ check.verdict }}</h1>
+    <p class="lead">{{ r.summary }}</p>
+  </div>
+</section>
+
+<div class="result-list">
+  <div>
+    <h2>Why this score</h2>
+    <ul class="findings">
+      {% for f in r.findings %}
+      <li class="{{ f.kind }}">
+        <span class="pts">{% if f.points > 0 %}+{{ f.points }}{% elif f.points < 0 %}{{ f.points }}{% else %}0{% endif %}</span>
+        <div><strong>{{ f.title }}</strong><p>{{ f.detail }}</p></div>
+      </li>
+      {% else %}
+      <li class="info"><span class="pts">0</span><div><strong>No warning signs found</strong><p>Nothing in the details you entered looked unusual.</p></div></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+
+<section class="tips-box">
+  <h2>What you should do</h2>
+  <ul class="plain">
+    {% for t in r.tips %}<li>{{ t }}</li>{% endfor %}
+  </ul>
+  <p><a href="{{ url_for('tips') }}">See all safety tips</a></p>
+</section>
+
+<p class="actions">
+  <a class="btn" href="{{ url_for('index') }}">Check another profile</a>
+  <a class="btn ghost" href="{{ url_for('history') }}">View history</a>
+</p>
+{% endblock %}

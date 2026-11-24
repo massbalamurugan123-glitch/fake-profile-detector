@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Not found{% endblock %}
+{% block content %}
+<section class="narrow">
+  <h1>That page does not exist</h1>
+  <p class="lead">The result may have been deleted from the history.</p>
+  <p><a class="btn" href="{{ url_for('index') }}">Check a profile</a></p>
+</section>
+{% endblock %}
